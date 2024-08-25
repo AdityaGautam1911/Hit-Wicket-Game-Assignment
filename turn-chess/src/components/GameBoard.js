@@ -4,10 +4,14 @@ import socket from "../services/websocket";
 const GameBoard = () => {
   const [gameState, setGameState] = useState(null);
   const [player, setPlayer] = useState(null); // Track player identifier
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [selectedPosition, setSelectedPosition] = useState(null);
 
   useEffect(() => {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      console.log("Message received:", data);
+
       if (data.type === "INITIAL_STATE") {
         setGameState(data.gameState);
         setPlayer(data.player); // Set player identifier
@@ -23,12 +27,34 @@ const GameBoard = () => {
   }, []);
 
   const handleCellClick = (row, col) => {
-    if (
-      gameState &&
-      gameState.board[row][col] === null &&
-      gameState.turn === player
-    ) {
-      socket.send(JSON.stringify({ type: "MAKE_MOVE", row, col, player }));
+    if (selectedCharacter) {
+      // Move character to the clicked cell
+      if (
+        gameState &&
+        gameState.board[row][col] === null &&
+        gameState.turn === player
+      ) {
+        socket.send(
+          JSON.stringify({
+            type: "MAKE_MOVE",
+            fromRow: selectedPosition.row,
+            fromCol: selectedPosition.col,
+            toRow: row,
+            toCol: col,
+            player,
+            character: selectedCharacter,
+          })
+        );
+        setSelectedCharacter(null);
+        setSelectedPosition(null);
+      }
+    } else {
+      // Select character if it's a valid move
+      const character = gameState.board[row][col];
+      if (character && character.startsWith(player)) {
+        setSelectedCharacter(character);
+        setSelectedPosition({ row, col });
+      }
     }
   };
 

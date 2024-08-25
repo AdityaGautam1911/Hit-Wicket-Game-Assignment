@@ -17,7 +17,7 @@ let gameState = {
   board: Array(5)
     .fill()
     .map(() => Array(5).fill(null)),
-  turn: "X", // Example: "X" or "O" for player turns
+  turn: "A", // Default to player A starting
 };
 
 // Set initial positions of the characters
@@ -31,11 +31,12 @@ wss.on("connection", (ws) => {
   console.log("New client connected");
 
   // Assign player to the client
-  const isPlayerA = [...wss.clients].length % 2 === 0; // Just for simplicity
-  const player = isPlayerA ? "X" : "O";
+  const playerId = [...wss.clients].length % 2 === 0 ? "A" : "B";
 
-  // Send the initial game state to the new client
-  ws.send(JSON.stringify({ type: "INITIAL_STATE", gameState, player }));
+  // Send the initial game state and player ID to the new client
+  ws.send(
+    JSON.stringify({ type: "INITIAL_STATE", gameState, player: playerId })
+  );
 
   ws.on("message", (message) => {
     const data = JSON.parse(message);
@@ -43,12 +44,20 @@ wss.on("connection", (ws) => {
 
     // Handle incoming move commands
     if (data.type === "MAKE_MOVE") {
-      const { row, col, player } = data;
-      if (gameState.board[row][col] === null) {
-        gameState.board[row][col] = player;
+      const { fromRow, fromCol, toRow, toCol, player, character } = data;
+
+      // Check if the move is valid
+      if (
+        gameState.turn === player &&
+        gameState.board[fromRow][fromCol] === character &&
+        gameState.board[toRow][toCol] === null
+      ) {
+        // Perform the move
+        gameState.board[toRow][toCol] = character;
+        gameState.board[fromRow][fromCol] = null;
 
         // Switch turn
-        gameState.turn = gameState.turn === "X" ? "O" : "X";
+        gameState.turn = gameState.turn === "A" ? "B" : "A";
 
         // Broadcast the updated game state to all clients
         wss.clients.forEach((client) => {
