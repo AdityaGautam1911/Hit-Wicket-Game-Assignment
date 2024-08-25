@@ -39,19 +39,20 @@ const GameBoard = () => {
         className="cell"
         onClick={() => handleCellClick(row, col)}
         style={{
-          width: "50px",
-          height: "50px",
-          display: "inline-block",
-          border: "1px solid black",
-          textAlign: "center",
-          lineHeight: "50px",
+          width: "60px",
+          height: "60px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "1px solid #333",
+          backgroundColor:
+            gameState.board[row][col] !== null ? "#f0f0f0" : "#fff",
           fontSize: "24px",
           cursor:
             gameState.board[row][col] === null && gameState.turn === player
               ? "pointer"
               : "not-allowed",
-          backgroundColor:
-            gameState.board[row][col] !== null ? "#f0f0f0" : "#fff",
+          transition: "background-color 0.3s",
         }}
       >
         {gameState.board[row][col]}
@@ -60,12 +61,21 @@ const GameBoard = () => {
   };
 
   if (!gameState) {
-    return <div>Loading...</div>; //error message
+    return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>Loading...</div>
+    );
   }
 
   return (
-    <div>
-      <h1>Turn-Based Chess-Like Game</h1>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}
+    >
       <div style={{ marginBottom: "20px", fontSize: "18px" }}>
         {player
           ? gameState.turn === player
@@ -73,11 +83,21 @@ const GameBoard = () => {
             : "Waiting for opponent..."
           : "Connecting..."}
       </div>
-      {gameState.board.map((row, rowIndex) => (
-        <div key={rowIndex} style={{ display: "flex" }}>
-          {row.map((_, colIndex) => renderCell(rowIndex, colIndex))}
-        </div>
-      ))}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          border: "2px solid #333",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        {gameState.board.map((row, rowIndex) => (
+          <div key={rowIndex} style={{ display: "flex" }}>
+            {row.map((_, colIndex) => renderCell(rowIndex, colIndex))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
