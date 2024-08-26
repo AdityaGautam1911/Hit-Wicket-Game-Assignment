@@ -7,5 +7,5 @@
 <br>
 ## Basic Game Display
 <br>
-![alt text](game.JPG)
+![screenshot](game.JPG)
 
