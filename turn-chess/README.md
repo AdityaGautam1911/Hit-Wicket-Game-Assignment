@@ -1,5 +1,5 @@
 # Turn-based Chess-like Game with Websocket Communication
-
+<br/>
 ## HOW TO RUN
 --> clone this repo
 --> "npm start" at the root folder in one terminal
