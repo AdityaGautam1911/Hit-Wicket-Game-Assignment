@@ -8,3 +8,5 @@
 <br>
 --> in another terminal cd to server.js then "node server.js"
 <br>
+## Basic Game layout
+![image](https://github.com/user-attachments/assets/93398172-1e9e-45b8-af11-e4c297447ad3)
