@@ -1,7 +1,10 @@
 # Turn-based Chess-like Game with Websocket Communication
-<br/>
+<br>
 # HOW TO RUN
-<br/>
+<br>
 --> clone this repo
+<br>
 --> "npm start" at the root folder in one terminal
+<br>
 --> in another terminal cd to server.js then "node server.js"
+<br>
