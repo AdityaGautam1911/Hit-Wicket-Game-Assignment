@@ -7,5 +7,5 @@
 <br>
 ## Basic Game Display
 <br>
-![alt text](http://url/to/img.png)
+![alt text](game.JPG)
 
