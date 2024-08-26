@@ -8,6 +8,7 @@
 
 ## Basic Game Display
 <br>
+
 ![image](https://github.com/user-attachments/assets/77aebc0d-59ad-4739-8e1c-1cf04b5c3b06)
 
 ## Storing movement history of players
